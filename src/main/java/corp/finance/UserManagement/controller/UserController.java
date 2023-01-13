@@ -2,7 +2,6 @@ package corp.finance.UserManagement.controller;
 
 import corp.finance.UserManagement.model.User;
 import corp.finance.UserManagement.service.UserService;
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
