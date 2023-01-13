@@ -21,6 +21,7 @@ public class UserRepository {
 
     @PostConstruct
     void init() {
+        log.info("init()");
         Audit audit = Audit
                 .builder()
                 .createdBy("opr001")
@@ -45,19 +46,22 @@ public class UserRepository {
                 .build();
     }
 
-    public List<User> getUsers() {
+    public List<User> getAllUsers() {
+        log.info("getAllUsers()");
         return List.of(user);
     }
 
     public List<User> getUsers(List<String> userIds) {
-        return getUsers()
+        log.info("getAllUsers() userIds: {}", userIds);
+        return getAllUsers()
                 .stream()
                 .filter(user -> userIds.contains(user.getUserId()))
                 .collect(Collectors.toList());
     }
 
     public User getUser(String userId) {
-        return getUsers()
+        log.info("getUser() userId: {}", userId);
+        return getAllUsers()
                 .stream()
                 .filter(user -> userId.equals(user.getUserId()))
                 .findFirst()
