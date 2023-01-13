@@ -45,23 +45,27 @@ public class UserRepository {
                 .build();
     }
 
-    public User getUser(String userId) {
-        return getAllUsers()
-                .stream()
-                .filter(user -> userId.equals(user.getUserId()))
-                .findFirst()
-                .orElse(User.builder().build());
-    }
-
-    public List<User> getAllUsers() {
+    public List<User> getUsers() {
         return List.of(user);
     }
 
-    public List<User> getAllUsers(List<String> userIds) {
-        return getAllUsers()
+    public List<User> getUsers(List<String> userIds) {
+        return getUsers()
                 .stream()
                 .filter(user -> userIds.contains(user.getUserId()))
                 .collect(Collectors.toList());
+    }
+
+    public User getUser(String userId) {
+        return getUsers()
+                .stream()
+                .filter(user -> userId.equals(user.getUserId()))
+                .findFirst()
+                .orElse(User
+                        .builder()
+                        .contact(Contact.builder().build())
+                        .audit(Audit.builder().build())
+                        .build());
     }
 
 }

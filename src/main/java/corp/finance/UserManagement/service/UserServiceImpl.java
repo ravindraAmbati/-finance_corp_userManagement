@@ -19,14 +19,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         log.info("getAllUsers()");
-        return userRepository.getAllUsers();
+        return userRepository.getUsers();
     }
 
     @Override
     public List<User> getUsers(List<String> userIds) {
         log.info("getUsers() userIds: {}", userIds);
         if (null != userIds && !userIds.isEmpty()) {
-            return userRepository.getAllUsers(userIds);
+            return userRepository.getUsers(userIds);
         }
         log.info("EMPTY results INVALID userIds: {}", userIds);
         return Collections.emptyList();
