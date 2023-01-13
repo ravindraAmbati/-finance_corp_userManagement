@@ -41,6 +41,8 @@ public class UserRepositoryImpl implements UserRepository {
                 .userId("usr001")
                 .userName("Ravindra")
                 .userType("Gold")
+                .productIds(List.of("prd001"))
+                .collateralIds(List.of("clt001"))
                 .contact(contact)
                 .audit(audit)
                 .build();

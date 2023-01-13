@@ -1,7 +1,10 @@
 package corp.finance.UserManagement.model;
 
+
 import lombok.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Builder
 @Data
@@ -15,6 +18,8 @@ public class User {
     private String userId;
     private String userName;
     private String userType;
+    private List<String> productIds;
+    private List<String> collateralIds;
     private Contact contact;
     private Audit audit;
 }
