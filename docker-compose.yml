@@ -1,0 +1,38 @@
+version: "2.12.2"
+
+services:
+
+  financial-services:
+    image: fincorp/financial-services:latest
+    mem_limit: 700m
+    ports:
+      - "9060:9060"
+    networks:
+      - finance-corp
+    
+  user-management:
+    image: fincorp/user-management:latest
+    mem_limit: 700m
+    ports:
+      - "9090:9090"
+    networks:
+      - finance-corp
+    
+  product-management:
+    image: fincorp/product-management:latest
+    mem_limit: 700m
+    ports:
+      - "9080:9080"
+    networks:
+      - finance-corp
+      
+  collateral-management:
+    image: fincorp/collateral-management:latest
+    mem_limit: 700m
+    ports:
+      - "9070:9070"
+    networks:
+      - finance-corp      
+    
+networks:
+  finance-corp:
