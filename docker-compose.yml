@@ -2,6 +2,14 @@ version: "2.12.2"
 
 services:
 
+  config-server:
+    image: fincorp/config-server:latest
+    mem_limit: 700m
+    ports:
+      - "9050:9050"
+    networks:
+      - finance-corp
+      
   financial-services:
     image: fincorp/financial-services:latest
     mem_limit: 700m
@@ -9,7 +17,27 @@ services:
       - "9060:9060"
     networks:
       - finance-corp
-    
+    depends_on: 
+      - config-server
+      - user-management
+      - collateral-management
+      - product-management
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 5
+        window: 120s      
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
+      SERVICE_COLLATERAL_HOST: collateral-management
+      SERVICE_COLLATERAL_PORT: 9070
+      SERVICE_PRODUCT_HOST: product-management
+      SERVICE_PRODUCT_PORT: 9080
+      SERVICE_USER_HOST: user-management
+      SERVICE_USER_PORT: 9090
+      
   user-management:
     image: fincorp/user-management:latest
     mem_limit: 700m
@@ -17,6 +45,17 @@ services:
       - "9090:9090"
     networks:
       - finance-corp
+    depends_on: 
+      - config-server
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s      
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
     
   product-management:
     image: fincorp/product-management:latest
@@ -25,6 +64,17 @@ services:
       - "9080:9080"
     networks:
       - finance-corp
+    depends_on: 
+      - config-server
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s      
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
       
   collateral-management:
     image: fincorp/collateral-management:latest
@@ -33,6 +83,17 @@ services:
       - "9070:9070"
     networks:
       - finance-corp      
+    depends_on: 
+      - config-server
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s      
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
     
 networks:
   finance-corp:
