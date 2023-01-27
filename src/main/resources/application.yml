@@ -1,6 +1,6 @@
 spring:
   application:
-    name: UserManagement
+    name: userManagement
   config:
     import: optional:configserver:http://localhost:9050
   profiles:
