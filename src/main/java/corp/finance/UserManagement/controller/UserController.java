@@ -1,5 +1,7 @@
 package corp.finance.UserManagement.controller;
 
+import corp.finance.UserManagement.config.ServiceConfig;
+import corp.finance.UserManagement.model.Properties;
 import corp.finance.UserManagement.model.User;
 import corp.finance.UserManagement.service.UserService;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,8 @@ public class UserController {
 
     private final UserService userService;
 
+    private final ServiceConfig serviceConfig;
+
     @GetMapping("/all")
     public @ResponseBody List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -28,5 +32,10 @@ public class UserController {
     @GetMapping("/{userId}")
     public @ResponseBody User getUser(@PathVariable("userId") String userId) {
         return userService.getUser(userId);
+    }
+
+    @GetMapping("/properties")
+    public @ResponseBody Properties getProperties() {
+        return new Properties(serviceConfig.getMessage(), serviceConfig.getBuildVersion(), serviceConfig.getMailDetails());
     }
 }

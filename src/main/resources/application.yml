@@ -1,5 +1,14 @@
 spring:
   application:
     name: UserManagement
+  config:
+    import: optional:configserver:http://localhost:9050
+  profiles:
+    active: default
 server:
   port: 9090
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
