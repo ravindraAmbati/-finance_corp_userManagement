@@ -9,6 +9,25 @@ services:
       - "9050:9050"
     networks:
       - finance-corp
+
+  eureka-server:
+    image: fincorp/eureka-server:latest
+    mem_limit: 700m
+    ports:
+      - "9040:9040"
+    networks:
+      - finance-corp
+    depends_on: 
+      - config-server
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 5
+        window: 120s      
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
       
   financial-services:
     image: fincorp/financial-services:latest
@@ -19,6 +38,7 @@ services:
       - finance-corp
     depends_on: 
       - config-server
+      - eureka-server
       - user-management
       - collateral-management
       - product-management
@@ -37,6 +57,7 @@ services:
       SERVICE_PRODUCT_PORT: 9080
       SERVICE_USER_HOST: user-management
       SERVICE_USER_PORT: 9090
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9040/eureka/
       
   user-management:
     image: fincorp/user-management:latest
@@ -47,6 +68,7 @@ services:
       - finance-corp
     depends_on: 
       - config-server
+      - eureka-server      
     deploy:
       restart_policy:
         condition: on-failure
@@ -56,6 +78,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9040/eureka/      
     
   product-management:
     image: fincorp/product-management:latest
@@ -66,6 +89,7 @@ services:
       - finance-corp
     depends_on: 
       - config-server
+      - eureka-server      
     deploy:
       restart_policy:
         condition: on-failure
@@ -75,6 +99,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9040/eureka/      
       
   collateral-management:
     image: fincorp/collateral-management:latest
@@ -85,6 +110,7 @@ services:
       - finance-corp      
     depends_on: 
       - config-server
+      - eureka-server      
     deploy:
       restart_policy:
         condition: on-failure
@@ -94,6 +120,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://config-server:9050/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9040/eureka/      
     
 networks:
   finance-corp:
